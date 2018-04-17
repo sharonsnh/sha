@@ -30,9 +30,8 @@ filter(graffiti, SRType$)
 graffiti_removal <- graffiti %>% group_by(year, SRType)
 
 
-request_by_year <- graffiti %>%
-  group_by(year, SRType) %>%
-  dplyr::summarize(Total = n()) 
+
+# has error-- Error: Insufficient values in manual scale. 382 needed but only 3 provided.
 
 ggplot(request_by_year, aes(year, Total, fill = SRType)) + 
   geom_bar(stat = "identity") + 
@@ -45,7 +44,31 @@ glimpse(month_day)
    dplyr::summarize(Total = n())
  request_by_year
 
+#remove Rat Rubout and bulk schedule
+graffiti1<- request_by_year[ grep("SW-Rat Rubout", request_by_year$SRType, invert = TRUE) , ]
+graffiti1 <- request_by_year[ grep("SSW-Bulk-Scheduled", request_by_year$SRType, invert = TRUE) , ]
+graffiti1 <-request_by_year[ grep("SW-Bulk-Scheduled", request_by_year$SRType, invert = TRUE) , ]
+View(graffiti1)
+
+#Remove rat rubout 2nd try-- ERROR
+graffiti1 <- request_by_year[request_by_year$SRType != "SW-Rat Rubout-Proactive", ]
+View(graffiti1)
 
 
+#filter data with selected SRType
+graffiti2<- graffiti1%>%select(year, SRType, Total) %>% filter(SRType %in% c("HCD-Sanitation Property","TRS-Parking Complaints","SW-Dirty Alley",
+                                                                             "SW-HGW","TRM-Snow/Icy Conditions","ECC-Vehicle Look Up",
+                                                                             "SW-Dirty Street - Proactive","SW-Dirty Alley","TRS-Parking Complaints",
+                                                                             "SW-Dirty Street","SW-Proactive Mowing Schedule","SW-HGW","TRS-Abandoned Vehicle","BGE-StLight(s) Out",
+                                                                             "HCD-Vacant Building","TRM-Illegal Sign Removal","HCD-Illegal Dumping"))
+View(graffiti2)
 
+listsrtype <-c("HCD-Sanitation Property","TRS-Parking Complaints","SW-Dirty Alley",
+               "SW-HGW","TRM-Snow/Icy Conditions","ECC-Vehicle Look Up",
+               "SW-Dirty Street - Proactive","SW-Dirty Alley","TRS-Parking Complaints",
+               "SW-Dirty Street","SW-Proactive Mowing Schedule","SW-HGW","TRS-Abandoned Vehicle","BGE-StLight(s) Out",
+               "HCD-Vacant Building","TRM-Illegal Sign Removal","HCD-Illegal Dumping")
+
+graffiti2<- graffiti1%>%select(year, SRType, Total) %>% filter(SRType %in% listsrtype)
+View(graffiti2)
 
