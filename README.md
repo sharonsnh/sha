@@ -1,4 +1,4 @@
-# sha
+# author - sharon
 #Splitting data in dates (mdy)
 setwd("C:/Users/admin/Desktop/MACHINE LEARNING/PROJECT - 602")
 getwd()
@@ -39,7 +39,11 @@ ggplot(request_by_year, aes(year, Total, fill = SRType)) +
   labs(title="Graffiti Removal", fill="Level") + theme_bw() +  scale_fill_manual(values = c("#66C2A5" ,"#3288BD", "#5E4FA2")) + scale_fill_viridis(discrete = TRUE)
 glimpse(month_day)
 
-
+#count of SRType
+ request_by_year <- graffiti %>%
+   group_by(year, SRType) %>%
+   dplyr::summarize(Total = n())
+ request_by_year
 
 
 
